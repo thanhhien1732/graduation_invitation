@@ -1,0 +1,1022 @@
+@font-face {
+  font-family: 'Emynam Crew';
+  src: url('/fonts/EmynamCrew-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Baystar Script';
+  src: url('/fonts/BaystarScript-Medium.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Darker Grotesque';
+  src: url('/fonts/DarkerGrotesque-Variable.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
+}
+
+.invitation-page {
+  min-height: 100svh;
+  color: #fff;
+  background: #4d0000;
+}
+
+.invitation-stage {
+  position: relative;
+  height: 100svh;
+  min-height: 650px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.background-layer {
+  position: absolute;
+  z-index: -3;
+  inset: -2%;
+  background-position: center;
+  background-size: cover;
+  animation: background-breathe 14s ease-in-out infinite alternate;
+}
+
+.background-layer::after {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 26%, rgb(255 36 25 / 10%), transparent 35%),
+    linear-gradient(90deg, rgb(53 0 0 / 12%), transparent 25% 75%, rgb(53 0 0 / 12%));
+  content: '';
+}
+
+.graduate-reveal {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  animation: person-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 180ms both;
+}
+
+.graduate-photo {
+  position: absolute;
+  bottom: -2.5%;
+  left: 50%;
+  width: auto;
+  max-width: none;
+  height: 89%;
+  transform: translateX(-50%);
+  transform-origin: center bottom;
+  filter: drop-shadow(0 22px 30px rgb(45 0 0 / 30%));
+  animation: person-float 2s ease-in-out 1s infinite alternate;
+}
+
+.foreground-layer {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  animation: foreground-rise 1.1s cubic-bezier(0.22, 1, 0.36, 1) 600ms both;
+}
+
+.graduation-heading {
+  position: absolute;
+  z-index: 1;
+  top: 4%;
+  left: 50%;
+  width: min(620px, 44vw);
+  color: #fff;
+  text-align: center;
+  transform: translateX(-50%);
+  text-shadow: 0 5px 0 rgb(83 0 0 / 46%);
+}
+
+.happy-text {
+  position: relative;
+  left: -5.75vw;
+  z-index: 2;
+  display: block;
+  font-family: 'Emynam Crew', Impact, sans-serif;
+  font-size: clamp(34px, 3vw, 57px);
+  line-height: 1;
+  text-transform: uppercase;
+  animation: title-drop 700ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
+}
+
+.graduation-heading h1 {
+  margin: 0;
+  font-family: 'Baystar Script', 'Brush Script MT', cursive;
+  font-size: clamp(76px, 6.9vw, 132px);
+  font-weight: 500;
+  line-height: 0.93;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+  animation: script-reveal 900ms cubic-bezier(0.16, 1, 0.3, 1) 360ms both;
+}
+
+.graduate-name {
+  position: absolute;
+  z-index: 3;
+  top: 30%;
+  margin: 0;
+  font-family: 'Emynam Crew', Impact, sans-serif;
+  font-size: clamp(46px, 4.2vw, 78px);
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 4px 0 rgb(83 0 0 / 40%);
+}
+
+.graduate-name-left {
+  left: 30%;
+  animation: name-from-left 800ms cubic-bezier(0.16, 1, 0.3, 1) 700ms both;
+}
+
+.graduate-name-right {
+  right: 31.5%;
+  top: 33%;
+  animation: name-from-right 800ms cubic-bezier(0.16, 1, 0.3, 1) 820ms both;
+}
+
+.accented-a {
+  position: relative;
+  display: inline-block;
+}
+
+.accented-a::before,
+.accented-a::after {
+  position: absolute;
+  color: inherit;
+  font-family: 'Darker Grotesque', Arial, sans-serif;
+  font-size: 0.55em;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.accented-a::before {
+  top: -0.26em;
+  left: 50%;
+  content: '˘';
+  transform: translateX(-50%);
+}
+
+.accented-a::after {
+  top: -0.54em;
+  left: 67%;
+  content: '´';
+}
+
+.event-details {
+  position: absolute;
+  z-index: 4;
+  bottom: 4.7%;
+  left: 50%;
+  width: min(620px, 34vw);
+  color: #fff;
+  font-family: 'Darker Grotesque', Arial, sans-serif;
+  text-align: center;
+  transform: translateX(-50%);
+  animation: details-enter 900ms cubic-bezier(0.16, 1, 0.3, 1) 1s both;
+}
+
+.event-time-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(36px, 5vw, 100px);
+  align-items: end;
+  padding-inline: 4%;
+}
+
+.event-time {
+  display: grid;
+  line-height: 0.88;
+}
+
+.event-time span {
+  font-size: clamp(24px, 1.75vw, 33px);
+  font-weight: 700;
+}
+
+.event-time strong {
+  font-size: clamp(46px, 3.45vw, 66px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+
+.event-divider {
+  width: 100%;
+  height: 4px;
+  margin: 14px 0 13px;
+  background: #fff;
+}
+
+.university {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  font-size: clamp(29px, 2.25vw, 42px);
+  font-weight: 750;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.university-logo {
+  display: block;
+  width: 36px;
+  max-width: none;
+  height: 42px;
+  object-fit: contain;
+}
+
+.event-address {
+  display: block;
+  margin: 13px 0 17px;
+  color: inherit;
+  font-size: clamp(18px, 1.28vw, 25px);
+  font-weight: 400;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18%;
+}
+
+.contact-row a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: inherit;
+  font-size: clamp(18px, 1.24vw, 24px);
+  font-weight: 400;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.phone-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  color: #7a0708;
+  font-size: 18px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.event-address:hover,
+.contact-row a:hover {
+  text-shadow: 0 0 16px rgb(255, 255, 255);
+}
+
+.event-address:focus-visible,
+.contact-row a:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.rsvp-trigger {
+  position: fixed;
+  z-index: 10;
+  top: 24px;
+  right: 24px;
+  display: inline-flex;
+  isolation: isolate;
+  align-items: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 8px 22px 8px 9px;
+  color: #701010;
+  font-family: 'Darker Grotesque', Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  background: #fff9f3;
+  border: 1px solid rgb(255 255 255 / 42%);
+  border-radius: 999px;
+  box-shadow:
+    0 14px 36px rgb(0 0 0 / 35%),
+    inset 0 1px 0 #fff;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+  animation: rsvp-enter 600ms cubic-bezier(0.16, 1, 0.3, 1) 1.45s both;
+}
+
+.rsvp-trigger::after {
+  position: absolute;
+  z-index: -1;
+  inset: -6px;
+  pointer-events: none;
+  content: '';
+  border: 1px solid rgb(255 239 222 / 72%);
+  border-radius: inherit;
+  animation: rsvp-invitation-pulse 1.2s ease-out 2.4s infinite;
+}
+
+.rsvp-trigger:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 42px rgb(0 0 0 / 42%),
+    inset 0 1px 0 #fff;
+}
+
+.rsvp-trigger:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+.rsvp-trigger-seal {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: #fff9f3;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  background:
+    radial-gradient(circle at 35% 28%, #dd4b3e, transparent 28%),
+    #9b1717;
+  border: 1px solid #6d0909;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 3px rgb(255 255 255 / 12%),
+    0 3px 8px rgb(91 0 0 / 28%);
+}
+
+.rsvp-backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  padding: 24px;
+  overflow-y: auto;
+  place-items: center;
+  font-family: 'Darker Grotesque', Arial, sans-serif;
+  background: rgb(18 0 0 / 76%);
+  backdrop-filter: blur(10px);
+  animation: backdrop-enter 180ms ease-out both;
+}
+
+.rsvp-dialog {
+  width: min(100%, 620px);
+  max-height: calc(100svh - 48px);
+  padding: clamp(24px, 5vw, 42px);
+  overflow-y: auto;
+  color: #3a1818;
+  background:
+    linear-gradient(rgb(255 252 247 / 96%), rgb(255 247 238 / 96%)),
+    #fff9f3;
+  border: 1px solid rgb(255 255 255 / 60%);
+  border-radius: 26px;
+  box-shadow: 0 32px 90px rgb(0 0 0 / 46%);
+  scrollbar-color: #9d1e20 #f4e5db;
+  scrollbar-width: thin;
+  animation: dialog-enter 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.rsvp-dialog::-webkit-scrollbar {
+  width: 10px;
+}
+
+.rsvp-dialog::-webkit-scrollbar-track {
+  margin: 12px 0;
+  background: #f4e5db;
+  border-radius: 999px;
+}
+
+.rsvp-dialog::-webkit-scrollbar-thumb {
+  background: linear-gradient(#b63535, #7c1116);
+  border: 2px solid #f4e5db;
+  border-radius: 999px;
+}
+
+.rsvp-dialog::-webkit-scrollbar-thumb:hover {
+  background: #701015;
+}
+
+.rsvp-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e8d3c6;
+}
+
+.rsvp-eyebrow {
+  margin: 0 0 12px;
+  color: #9d1e20;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.rsvp-heading h2 {
+  max-width: 430px;
+  margin: 0;
+  color: #6e0e12;
+  font-family: 'Baystar Script', 'Brush Script MT', cursive;
+  font-size: clamp(36px, 6vw, 50px);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.rsvp-heading p:last-child {
+  max-width: 470px;
+  margin: 12px 0 0;
+  color: #765e58;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.rsvp-close {
+  display: grid;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: #701015;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1;
+  background: #f4e5db;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translateY(-2px);
+}
+
+.rsvp-close:hover {
+  background: #ead2c3;
+}
+
+.rsvp-close:focus-visible,
+.rsvp-submit:focus-visible,
+.rsvp-success button:focus-visible {
+  outline: 3px solid #a51d22;
+  outline-offset: 3px;
+}
+
+.rsvp-form {
+  display: grid;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.rsvp-field {
+  display: grid;
+  gap: 9px;
+  color: #4b2929;
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.rsvp-field strong,
+.rsvp-fieldset strong {
+  color: #b51e23;
+}
+
+.rsvp-field input,
+.rsvp-field textarea {
+  width: 100%;
+  color: #321d1d;
+  font: inherit;
+  font-weight: 500;
+  background: #fff;
+  border: 1px solid #dbc5b9;
+  border-radius: 12px;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.rsvp-field input {
+  height: 50px;
+  padding: 0 15px;
+}
+
+.rsvp-field textarea {
+  min-height: 96px;
+  padding: 13px 15px;
+  resize: vertical;
+}
+
+.rsvp-field input:focus,
+.rsvp-field textarea:focus {
+  border-color: #a92227;
+  box-shadow: 0 0 0 3px rgb(169 34 39 / 13%);
+}
+
+.rsvp-field input::placeholder,
+.rsvp-field textarea::placeholder {
+  color: #a9958e;
+}
+
+.rsvp-fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.rsvp-fieldset legend {
+  padding: 0;
+  margin-bottom: 11px;
+  color: #4b2929;
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.rsvp-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.rsvp-options label {
+  position: relative;
+  cursor: pointer;
+}
+
+.rsvp-options input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.rsvp-options span {
+  display: grid;
+  min-height: 52px;
+  padding: 10px 13px;
+  place-items: center;
+  color: #644747;
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #dbc5b9;
+  border-radius: 12px;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.rsvp-options label:hover span {
+  border-color: #b97977;
+  transform: translateY(-1px);
+}
+
+.rsvp-options input:checked+span {
+  color: #fff;
+  background: #8e161b;
+  border-color: #8e161b;
+  box-shadow: 0 6px 16px rgb(116 13 18 / 20%);
+}
+
+.rsvp-options input:focus-visible+span {
+  outline: 3px solid #a51d22;
+  outline-offset: 3px;
+}
+
+.rsvp-submit,
+.rsvp-success button {
+  min-height: 52px;
+  padding: 12px 20px;
+  color: #fffaf4;
+  font: inherit;
+  font-weight: 800;
+  font-size: 18px;
+  background: linear-gradient(135deg, #a51e23, #751014);
+  border: 0;
+  border-radius: 13px;
+  box-shadow: 0 10px 22px rgb(117 16 20 / 22%);
+  cursor: pointer;
+}
+
+.rsvp-submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.rsvp-error {
+  padding: 11px 13px;
+  margin: -5px 0 0;
+  color: #8e1419;
+  font-size: 14px;
+  line-height: 1.45;
+  background: #fbe7e5;
+  border: 1px solid #f0c3bf;
+  border-radius: 10px;
+}
+
+.rsvp-success {
+  display: grid;
+  min-height: 350px;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.rsvp-success>span {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 20px;
+  place-items: center;
+  color: #fff;
+  font-size: 32px;
+  background: #92191e;
+  border-radius: 50%;
+  box-shadow: 0 12px 28px rgb(117 16 20 / 24%);
+}
+
+.rsvp-success h3 {
+  margin: 0;
+  color: #6e0e12;
+  font-family: 'Baystar Script', 'Brush Script MT', cursive;
+  font-size: 46px;
+  font-weight: 500;
+}
+
+.rsvp-success p {
+  max-width: 390px;
+  margin: 12px 0 24px;
+  color: #765e58;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.rsvp-success button {
+  min-width: 160px;
+}
+
+@keyframes background-breathe {
+  to {
+    transform: scale(1.035);
+    filter: saturate(1.08);
+  }
+}
+
+@keyframes person-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+}
+
+@keyframes person-float {
+  from {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  to {
+    transform: translateX(-50%) translateY(-0.8%);
+  }
+}
+
+@keyframes foreground-rise {
+  from {
+    opacity: 0;
+    transform: translateY(7%);
+  }
+}
+
+@keyframes title-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes script-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+    filter: blur(8px);
+  }
+}
+
+@keyframes name-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes name-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+
+@keyframes details-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 32px);
+  }
+}
+
+@keyframes rsvp-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes rsvp-invitation-pulse {
+
+  0%,
+  54%,
+  100% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  12% {
+    opacity: 0.72;
+  }
+
+  38% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes backdrop-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+}
+
+@media (max-width: 1200px) {
+  .graduation-heading {
+    width: 54vw;
+  }
+
+  .graduate-name-left {
+    left: 18%;
+  }
+
+  .graduate-name-right {
+    right: 19%;
+  }
+
+  .event-details {
+    width: min(590px, 54vw);
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1024px) and (orientation: portrait) {
+  .invitation-stage {
+    min-height: 760px;
+  }
+
+  .graduation-heading {
+    top: 3.5%;
+    width: 72vw;
+  }
+
+  .happy-text {
+    left: -7vw;
+    font-size: clamp(38px, 5.5vw, 52px);
+  }
+
+  .graduation-heading h1 {
+    font-size: clamp(80px, 10vw, 110px);
+  }
+
+  .graduate-photo {
+    bottom: 5%;
+    height: 82%;
+  }
+
+  .graduate-name {
+    top: 24%;
+    font-size: clamp(50px, 7vw, 68px);
+  }
+
+  .graduate-name-left {
+    left: 10%;
+  }
+
+  .graduate-name-right {
+    top: 29%;
+    right: 10%;
+  }
+
+  .event-details {
+    bottom: 5%;
+    width: min(620px, 80vw);
+  }
+}
+
+@media (max-width: 700px) {
+  .invitation-stage {
+    height: max(100svh, 720px);
+    min-height: 720px;
+  }
+
+  .background-layer {
+    inset: 0;
+    background-position: center;
+  }
+
+  .graduation-heading {
+    top: 4%;
+    width: 92vw;
+  }
+
+  .happy-text {
+    font-size: clamp(28px, 8vw, 42px);
+    left: -16vw;
+  }
+
+  .graduation-heading h1 {
+    font-size: clamp(62px, 18vw, 94px);
+  }
+
+  .graduate-reveal {
+    z-index: -1;
+  }
+
+  .graduate-photo {
+    bottom: 9%;
+    height: 73%;
+    left: 55%;
+  }
+
+  .foreground-layer {
+    object-position: center;
+  }
+
+  .graduate-name {
+    top: 23.5%;
+    font-size: clamp(34px, 10.5vw, 54px);
+  }
+
+  .graduate-name-left {
+    left: 4.5%;
+  }
+
+  .graduate-name-right {
+    right: 4.5%;
+    top: 29%;
+  }
+
+  .event-details {
+    bottom: 9%;
+    width: 92vw;
+  }
+
+  .event-time-row {
+    gap: 13vw;
+    padding-inline: 7%;
+  }
+
+  .event-time span {
+    margin-bottom: 4px;
+    font-size: clamp(20px, 5.8vw, 28px);
+  }
+
+  .event-time strong {
+    font-size: clamp(38px, 11.5vw, 56px);
+  }
+
+  .event-divider {
+    height: 3px;
+    margin: 9px 0;
+  }
+
+  .university {
+    gap: 9px;
+    font-size: clamp(24px, 7vw, 34px);
+  }
+
+  .university-logo {
+    width: 29px;
+    height: 34px;
+  }
+
+  .event-address {
+    margin: 9px 0 12px;
+    font-size: clamp(15px, 4.2vw, 20px);
+  }
+
+  .contact-row {
+    gap: 5%;
+  }
+
+  .contact-row a {
+    gap: 6px;
+    font-size: clamp(14px, 4.1vw, 19px);
+  }
+
+  .phone-icon {
+    width: 29px;
+    height: 29px;
+    font-size: 18px;
+  }
+
+  .rsvp-trigger {
+    top: auto;
+    right: auto;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    left: 50%;
+    translate: -50% 0;
+    min-height: 48px;
+    padding: 7px 17px 7px 8px;
+    font-size: 15px;
+  }
+
+  .rsvp-trigger-seal {
+    width: 32px;
+    height: 32px;
+  }
+
+  .rsvp-backdrop {
+    padding: 0;
+    place-items: end center;
+  }
+
+  .rsvp-dialog {
+    width: 100%;
+    max-height: min(92svh, 760px);
+    padding: 26px 20px max(24px, env(safe-area-inset-bottom));
+    border-radius: 24px 24px 0 0;
+  }
+
+  .rsvp-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) and (max-height: 760px) {
+  .graduate-photo {
+    bottom: 11%;
+    height: 70%;
+  }
+
+  .graduate-name {
+    top: 24%;
+  }
+
+  .event-details {
+    bottom: 8.5%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .background-layer,
+  .graduate-reveal,
+  .graduate-photo,
+  .foreground-layer,
+  .happy-text,
+  .graduation-heading h1,
+  .graduate-name,
+  .event-details,
+  .rsvp-trigger,
+  .rsvp-trigger::after,
+  .rsvp-backdrop,
+  .rsvp-dialog,
+  .rsvp-options span {
+    animation: none;
+    transition: none;
+  }
+}
