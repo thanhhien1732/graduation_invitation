@@ -88,7 +88,7 @@ function App() {
 
       setSubmitState('success')
       setSubmitMessage(
-        'Cảm ơn bạn đã xác nhận. Hẹn gặp bạn tại lễ tốt nghiệp của Thanh Hiền!',
+        'Cảm ơn bạn đã xác nhận. Hẹn gặp bạn tại lễ tốt nghiệp của Bắp nhé!',
       )
       setFormData(initialForm)
     } catch {
