@@ -871,14 +871,14 @@
   }
 
   .happy-text {
-    font-size: clamp(28px, 7vw, 42px);
+    font-size: clamp(28px, 6.5vw, 42px);
     left: -13vw;
   }
 
   .graduation-heading h1 {
     position: relative;
     left: 1vw;
-    font-size: clamp(62px, 17vw, 94px);
+    font-size: clamp(62px, 16.5vw, 94px);
   }
 
   .graduate-reveal {
