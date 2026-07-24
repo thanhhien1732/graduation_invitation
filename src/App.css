@@ -54,7 +54,7 @@
   z-index: 2;
   inset: 0;
   pointer-events: none;
-  animation: person-rise 2s cubic-bezier(0.16, 1, 0.3, 1) 180ms both;
+  animation: person-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 180ms both;
 }
 
 .graduate-photo {
