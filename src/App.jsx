@@ -257,7 +257,7 @@ function App() {
 
                 <fieldset className="rsvp-fieldset">
                   <legend>
-                    Bạn có tham dự lễ tốt nghiệp không?{' '}
+                    Bạn tham dự lễ tốt nghiệp chứ?{' '}
                     <strong aria-hidden="true">*</strong>
                   </legend>
                   <div className="rsvp-options">
@@ -288,7 +288,7 @@ function App() {
 
                 <fieldset className="rsvp-fieldset">
                   <legend>
-                    Bạn có tham dự tiệc ăn mừng sau buổi lễ không?{' '}
+                    Bạn tham dự tiệc vào tối hôm đó không? (Dự kiến){' '}
                     <strong aria-hidden="true">*</strong>
                   </legend>
                   <div className="rsvp-options">
