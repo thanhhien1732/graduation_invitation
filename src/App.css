@@ -422,14 +422,14 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 22px;
-  padding-bottom: 24px;
+  padding-bottom: 18px;
   border-bottom: 1px solid #e8d3c6;
 }
 
 .rsvp-eyebrow {
   margin: 0 0 12px;
   color: #9d1e20;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -440,7 +440,7 @@
   margin: 0;
   color: #6e0e12;
   font-family: 'Baystar Script', 'Brush Script MT', cursive;
-  font-size: clamp(36px, 6vw, 50px);
+  font-size: clamp(30px, 4vw, 38px);
   font-weight: 500;
   line-height: 1.05;
 }
@@ -449,7 +449,7 @@
   max-width: 470px;
   margin: 12px 0 0;
   color: #765e58;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.45;
 }
 
@@ -649,7 +649,7 @@
   display: grid;
   width: 72px;
   height: 72px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   place-items: center;
   color: #fff;
   font-size: 32px;
@@ -662,20 +662,29 @@
   margin: 0;
   color: #6e0e12;
   font-family: 'Baystar Script', 'Brush Script MT', cursive;
-  font-size: 46px;
+  font-size: clamp(32px, 3.5vw, 38px);
   font-weight: 500;
+  line-height: 1.05;
 }
 
 .rsvp-success p {
   max-width: 390px;
   margin: 12px 0 24px;
   color: #765e58;
-  font-size: 17px;
+  font-size: 20px;
   line-height: 1.5;
+  white-space: pre-line;
 }
 
 .rsvp-success button {
   min-width: 160px;
+  transition: background 160ms ease;
+}
+
+@media (hover: hover) {
+  .rsvp-success button:hover {
+    background: linear-gradient(135deg, #c4373b, #941b20);
+  }
 }
 
 @keyframes background-breathe {
@@ -981,6 +990,14 @@
     border-radius: 24px 24px 0 0;
   }
 
+  .rsvp-heading h2 {
+    font-size: clamp(27px, 7vw, 32px);
+  }
+
+  .rsvp-success h3 {
+    font-size: clamp(29px, 8vw, 30px);
+  }
+
   .rsvp-options {
     grid-template-columns: 1fr;
   }
@@ -1013,6 +1030,7 @@
   .event-details,
   .rsvp-trigger,
   .rsvp-trigger::after,
+  .rsvp-success button,
   .rsvp-backdrop,
   .rsvp-dialog,
   .rsvp-options span {
