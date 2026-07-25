@@ -15,6 +15,24 @@ const initialForm = {
   note: '',
 }
 
+const getSuccessMessage = ({ ceremony, party }) => {
+  const isAttendingParty = party !== 'Không'
+
+  if (ceremony === 'Có' && isAttendingParty) {
+    return 'Cảm ơn bạn đã xác nhận.\nVề thông tin buổi tiệc mình sẽ thông báo cho bạn sau.\nHẹn gặp bạn tại lễ tốt nghiệp của mình nhé! ^^'
+  }
+
+  if (ceremony === 'Có') {
+    return 'Cảm ơn bạn đã xác nhận.\nHẹn gặp bạn tại lễ tốt nghiệp của mình nhé! ^^'
+  }
+
+  if (isAttendingParty) {
+    return 'Cảm ơn bạn đã xác nhận.\nHẹn gặp bạn tại buổi tiệc ^^ thông tin mình sẽ thông báo cho bạn sau nhé!'
+  }
+
+  return 'Thật tiếc khi bạn không đến được lễ tốt nghiệp và buổi tiệc của mình :(\nHẹn gặp lại vào dịp khác nhé!'
+}
+
 function App() {
   const [isRsvpOpen, setIsRsvpOpen] = useState(false)
   const [formData, setFormData] = useState(initialForm)
@@ -87,9 +105,7 @@ function App() {
       })
 
       setSubmitState('success')
-      setSubmitMessage(
-        'Cảm ơn bạn đã xác nhận.\nHẹn gặp bạn tại lễ tốt nghiệp của Bắp nhé!',
-      )
+      setSubmitMessage(getSuccessMessage(formData))
       setFormData(initialForm)
     } catch {
       setSubmitState('error')
@@ -257,7 +273,7 @@ function App() {
 
                 <fieldset className="rsvp-fieldset">
                   <legend>
-                    Bạn tham dự lễ tốt nghiệp chứ?{' '}
+                    Bạn tham dự lễ tốt nghiệp của mình chứ?{' '}
                     <strong aria-hidden="true">*</strong>
                   </legend>
                   <div className="rsvp-options">
@@ -288,7 +304,7 @@ function App() {
 
                 <fieldset className="rsvp-fieldset">
                   <legend>
-                    Bạn tham dự tiệc vào tối hôm đó không? (Dự kiến){' '}
+                    Mình dự kiến tổ chức tiệc nhưng chưa chốt ngày, bạn rảnh ngày nào?{' '}
                     <strong aria-hidden="true">*</strong>
                   </legend>
                   <div className="rsvp-options">
@@ -296,12 +312,34 @@ function App() {
                       <input
                         type="radio"
                         name="party"
-                        value="Có"
-                        checked={formData.party === 'Có'}
+                        value="Tối thứ 5 (06/08)"
+                        checked={formData.party === 'Tối thứ 5 (06/08)'}
                         onChange={updateField}
                         required
                       />
-                      <span>Có, mình tham dự</span>
+                      <span>Tối thứ 5 (06/08)</span>
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="party"
+                        value="Tối thứ 6 (07/08)"
+                        checked={formData.party === 'Tối thứ 6 (07/08)'}
+                        onChange={updateField}
+                        required
+                      />
+                      <span>Tối thứ 6 (07/08)</span>
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="party"
+                        value="Tối thứ 7 (08/08)"
+                        checked={formData.party === 'Tối thứ 7 (08/08)'}
+                        onChange={updateField}
+                        required
+                      />
+                      <span>Tối thứ 7 (08/08)</span>
                     </label>
                     <label>
                       <input
@@ -319,7 +357,7 @@ function App() {
 
                 <label className="rsvp-field">
                   <span>
-                    Ghi chú
+                    Lời nhắn nhủ
                   </span>
                   <textarea
                     name="note"
