@@ -11,12 +11,12 @@ const rsvpEndpoint =
 const initialForm = {
   fullName: '',
   ceremony: '',
-  party: '',
+  party: [],
   note: '',
 }
 
 const getSuccessMessage = ({ ceremony, party }) => {
-  const isAttendingParty = party !== 'Không'
+  const isAttendingParty = party.length > 0 && !party.includes('Không')
 
   if (ceremony === 'Có' && isAttendingParty) {
     return 'Cảm ơn bạn đã xác nhận.\nThông tin buổi tiệc mình sẽ thông báo cho bạn sau.\nHẹn gặp bạn tại lễ tốt nghiệp của mình nhé! ^^'
@@ -77,8 +77,33 @@ function App() {
     setFormData((current) => ({ ...current, [name]: value }))
   }
 
+  const updatePartySelection = (event) => {
+    const { value, checked } = event.target
+
+    setFormData((current) => {
+      if (value === 'Không') {
+        return { ...current, party: checked ? ['Không'] : [] }
+      }
+
+      const selectedDays = current.party.filter((option) => option !== 'Không')
+
+      return {
+        ...current,
+        party: checked
+          ? [...selectedDays, value]
+          : selectedDays.filter((option) => option !== value),
+      }
+    })
+  }
+
   const submitRsvp = async (event) => {
     event.preventDefault()
+
+    if (formData.party.length === 0) {
+      setSubmitState('error')
+      setSubmitMessage('Vui lòng chọn ít nhất một ngày hoặc xác nhận không tham dự tiệc.')
+      return
+    }
 
     if (!rsvpEndpoint) {
       setSubmitState('error')
@@ -100,6 +125,7 @@ function App() {
         },
         body: JSON.stringify({
           ...formData,
+          party: formData.party.join(', '),
           submittedAt: new Date().toISOString(),
         }),
       })
@@ -307,48 +333,45 @@ function App() {
                     Mình dự kiến tổ chức tiệc nhưng chưa chốt ngày, bạn rảnh ngày nào?{' '}
                     <strong aria-hidden="true">*</strong>
                   </legend>
+                  <p className="rsvp-options-hint">Bạn có thể chọn nhiều ngày phù hợp!</p>
                   <div className="rsvp-options">
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         name="party"
                         value="Tối thứ 5 (06/08)"
-                        checked={formData.party === 'Tối thứ 5 (06/08)'}
-                        onChange={updateField}
-                        required
+                        checked={formData.party.includes('Tối thứ 5 (06/08)')}
+                        onChange={updatePartySelection}
                       />
                       <span>Tối thứ 5 (06/08)</span>
                     </label>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         name="party"
                         value="Tối thứ 6 (07/08)"
-                        checked={formData.party === 'Tối thứ 6 (07/08)'}
-                        onChange={updateField}
-                        required
+                        checked={formData.party.includes('Tối thứ 6 (07/08)')}
+                        onChange={updatePartySelection}
                       />
                       <span>Tối thứ 6 (07/08)</span>
                     </label>
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         name="party"
                         value="Tối thứ 7 (08/08)"
-                        checked={formData.party === 'Tối thứ 7 (08/08)'}
-                        onChange={updateField}
-                        required
+                        checked={formData.party.includes('Tối thứ 7 (08/08)')}
+                        onChange={updatePartySelection}
                       />
                       <span>Tối thứ 7 (08/08)</span>
                     </label>
-                    <label>
+                    <label className="rsvp-option-no-party">
                       <input
-                        type="radio"
+                        type="checkbox"
                         name="party"
                         value="Không"
-                        checked={formData.party === 'Không'}
-                        onChange={updateField}
-                        required
+                        checked={formData.party.includes('Không')}
+                        onChange={updatePartySelection}
                       />
                       <span>Mình không tham dự</span>
                     </label>
