@@ -19,7 +19,7 @@ const getSuccessMessage = ({ ceremony, party }) => {
   const isAttendingParty = party !== 'Không'
 
   if (ceremony === 'Có' && isAttendingParty) {
-    return 'Cảm ơn bạn đã xác nhận.\nVề thông tin buổi tiệc mình sẽ thông báo cho bạn sau.\nHẹn gặp bạn tại lễ tốt nghiệp của mình nhé! ^^'
+    return 'Cảm ơn bạn đã xác nhận.\nThông tin buổi tiệc mình sẽ thông báo cho bạn sau.\nHẹn gặp bạn tại lễ tốt nghiệp của mình nhé! ^^'
   }
 
   if (ceremony === 'Có') {
