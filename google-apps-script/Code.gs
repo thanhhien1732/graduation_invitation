@@ -1,10 +1,12 @@
 const SHEET_NAME = 'RSVP';
+const GMAIL_PATTERN = /^[A-Z0-9._%+-]+@gmail\.com$/i;
 const SHEET_HEADERS = [
   'STT',
   'Họ và tên',
   'Tham dự lễ tốt nghiệp',
   'Tham dự tiệc ăn mừng',
-  'Ghi chú',
+  'Email',
+  'Nhắn nhủ',
   'Thời gian gửi',
 ];
 
@@ -17,7 +19,15 @@ function doPost(event) {
 
     const data = JSON.parse(event.postData.contents);
 
-    if (!data.fullName || !data.ceremony || !data.party) {
+    if (
+      !data.fullName ||
+      !data.ceremony ||
+      (data.ceremony === 'Có' && !data.vluAffiliation) ||
+      !data.party ||
+      (data.ceremony === 'Có' &&
+        data.vluAffiliation === 'Không phải' &&
+        (!data.email || !GMAIL_PATTERN.test(String(data.email).trim())))
+    ) {
       return jsonResponse({
         ok: false,
         message: 'Thiếu thông tin bắt buộc.',
@@ -41,6 +51,7 @@ function doPost(event) {
       sanitizeCell(data.fullName),
       sanitizeCell(data.ceremony),
       sanitizeCell(data.party),
+      sanitizeCell(data.email || ''),
       sanitizeCell(data.note || ''),
       new Date(),
     ]);
@@ -104,7 +115,8 @@ function ensureSheetLayout(sheet) {
     valueFrom(row, 'Họ và tên'),
     valueFrom(row, 'Tham dự lễ tốt nghiệp'),
     valueFrom(row, 'Tham dự tiệc ăn mừng'),
-    valueFrom(row, 'Ghi chú'),
+    valueFrom(row, 'Email'),
+    valueFrom(row, 'Nhắn nhủ') || valueFrom(row, 'Ghi chú'),
     valueFrom(row, 'Thời gian gửi'),
   ]);
 

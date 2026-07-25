@@ -542,6 +542,35 @@
   border: 0;
 }
 
+.rsvp-ceremony-section {
+  display: grid;
+}
+
+.rsvp-vlu-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition:
+    grid-template-rows 260ms ease,
+    margin-top 260ms ease,
+    opacity 180ms ease,
+    transform 260ms ease;
+}
+
+.rsvp-vlu-reveal.is-visible {
+  grid-template-rows: 1fr;
+  margin-top: 24px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rsvp-vlu-reveal-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .rsvp-fieldset legend {
   padding: 0;
   margin-bottom: 11px;
@@ -556,6 +585,54 @@
   color: #8b5a56;
   font-size: 14px;
   font-weight: 650;
+}
+
+.rsvp-vlu-reminder {
+  margin: 12px 0 0;
+  padding: 10px 13px;
+  color: #7a3430;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.4;
+  background: #fff5e8;
+  border-left: 3px solid #a92227;
+  border-radius: 8px;
+  animation: vlu-reminder-in 240ms ease both;
+}
+
+.rsvp-email-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition:
+    grid-template-rows 260ms ease,
+    opacity 180ms ease,
+    transform 260ms ease;
+}
+
+.rsvp-email-reveal.is-visible {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rsvp-email-reveal-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rsvp-email-reveal .rsvp-field {
+  padding-top: 13px;
+}
+
+.rsvp-email-note {
+  display: block;
+  margin-top: 3px;
+  color: #8b5a56;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.35;
 }
 
 .rsvp-options {
@@ -661,6 +738,18 @@
 .rsvp-options input:focus-visible+span {
   outline: 3px solid #a51d22;
   outline-offset: 3px;
+}
+
+@keyframes vlu-reminder-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .rsvp-submit,

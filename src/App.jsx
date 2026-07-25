@@ -11,9 +11,13 @@ const rsvpEndpoint =
 const initialForm = {
   fullName: '',
   ceremony: '',
+  vluAffiliation: '',
+  email: '',
   party: [],
   note: '',
 }
+
+const isGmailAddress = (email) => /^[A-Z0-9._%+-]+@gmail\.com$/i.test(email)
 
 const getSuccessMessage = ({ ceremony, party }) => {
   const isAttendingParty = party.length > 0 && !party.includes('Không')
@@ -74,7 +78,36 @@ function App() {
 
   const updateField = (event) => {
     const { name, value } = event.target
+
+    if (name === 'email') {
+      event.target.setCustomValidity(
+        value && !isGmailAddress(value.trim())
+          ? 'Vui lòng nhập địa chỉ email có đuôi @gmail.com.'
+          : '',
+      )
+    }
+
     setFormData((current) => ({ ...current, [name]: value }))
+  }
+
+  const updateCeremonyAttendance = (event) => {
+    const { value } = event.target
+
+    setFormData((current) => ({
+      ...current,
+      ceremony: value,
+      ...(value === 'Có' ? {} : { vluAffiliation: '', email: '' }),
+    }))
+  }
+
+  const updateVluAffiliation = (event) => {
+    const { value } = event.target
+
+    setFormData((current) => ({
+      ...current,
+      vluAffiliation: value,
+      email: value === 'Không phải' ? current.email : '',
+    }))
   }
 
   const updatePartySelection = (event) => {
@@ -98,6 +131,21 @@ function App() {
 
   const submitRsvp = async (event) => {
     event.preventDefault()
+
+    if (formData.vluAffiliation === 'Không phải' && !formData.email.trim()) {
+      setSubmitState('error')
+      setSubmitMessage('Vui lòng nhập email để mình gửi thông tin tham dự trường.')
+      return
+    }
+
+    if (
+      formData.vluAffiliation === 'Không phải' &&
+      !isGmailAddress(formData.email.trim())
+    ) {
+      setSubmitState('error')
+      setSubmitMessage('Vui lòng nhập địa chỉ email có đuôi @gmail.com.')
+      return
+    }
 
     if (formData.party.length === 0) {
       setSubmitState('error')
@@ -125,6 +173,7 @@ function App() {
         },
         body: JSON.stringify({
           ...formData,
+          email: formData.email.trim(),
           party: formData.party.join(', '),
           submittedAt: new Date().toISOString(),
         }),
@@ -140,6 +189,8 @@ function App() {
       )
     }
   }
+
+  const isAttendingCeremony = formData.ceremony === 'Có'
 
   return (
     <main className="invitation-page">
@@ -297,6 +348,7 @@ function App() {
                   />
                 </label>
 
+                <div className="rsvp-ceremony-section">
                 <fieldset className="rsvp-fieldset">
                   <legend>
                     Bạn tham dự lễ tốt nghiệp của mình chứ?{' '}
@@ -309,7 +361,7 @@ function App() {
                         name="ceremony"
                         value="Có"
                         checked={formData.ceremony === 'Có'}
-                        onChange={updateField}
+                        onChange={updateCeremonyAttendance}
                         required
                       />
                       <span>Có, mình sẽ đến</span>
@@ -320,13 +372,101 @@ function App() {
                         name="ceremony"
                         value="Không"
                         checked={formData.ceremony === 'Không'}
-                        onChange={updateField}
+                        onChange={updateCeremonyAttendance}
                         required
                       />
                       <span>Mình không thể đến</span>
                     </label>
                   </div>
                 </fieldset>
+
+                <div
+                  className={`rsvp-vlu-reveal${
+                    isAttendingCeremony ? ' is-visible' : ''
+                  }`}
+                  aria-hidden={!isAttendingCeremony}
+                >
+                  <div className="rsvp-vlu-reveal-inner">
+                <fieldset className="rsvp-fieldset">
+                  <legend>
+                    Bạn có phải là sinh viên/cựu sinh viên VLU không?{' '}
+                    <strong aria-hidden="true">*</strong>
+                  </legend>
+                  <div className="rsvp-options">
+                    <label>
+                      <input
+                        type="radio"
+                        name="vluAffiliation"
+                        value="Đúng rồi"
+                        checked={formData.vluAffiliation === 'Đúng rồi'}
+                        onChange={updateVluAffiliation}
+                        required={isAttendingCeremony}
+                        disabled={!isAttendingCeremony}
+                      />
+                      <span>Đúng rồi</span>
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="vluAffiliation"
+                        value="Không phải"
+                        checked={formData.vluAffiliation === 'Không phải'}
+                        onChange={updateVluAffiliation}
+                        required={isAttendingCeremony}
+                        disabled={!isAttendingCeremony}
+                      />
+                      <span>Không phải</span>
+                    </label>
+                  </div>
+
+                  {formData.vluAffiliation === 'Đúng rồi' && (
+                    <p className="rsvp-vlu-reminder" role="status">
+                      Nhớ đem theo thẻ sinh viên để được vào trường nhé!
+                    </p>
+                  )}
+
+                  <div
+                    className={`rsvp-email-reveal${
+                      isAttendingCeremony && formData.vluAffiliation === 'Không phải'
+                        ? ' is-visible'
+                        : ''
+                    }`}
+                    aria-hidden={
+                      !isAttendingCeremony || formData.vluAffiliation !== 'Không phải'
+                    }
+                  >
+                    <div className="rsvp-email-reveal-inner">
+                      <label className="rsvp-field">
+                        <span>
+                          Email <strong aria-hidden="true">*</strong>
+                          <small className="rsvp-email-note">
+                            Mình xin email để đăng ký với trường cho bạn vào cổng nhá!
+                          </small>
+                        </span>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={updateField}
+                          autoComplete="email"
+                          inputMode="email"
+                          pattern="^[A-Za-z0-9._%+-]+@gmail[.]com$"
+                          title="Vui lòng nhập địa chỉ email có đuôi @gmail.com"
+                          placeholder="Nhập email của bạn"
+                          required={
+                            isAttendingCeremony && formData.vluAffiliation === 'Không phải'
+                          }
+                          disabled={
+                            !isAttendingCeremony || formData.vluAffiliation !== 'Không phải'
+                          }
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+                  </div>
+                </div>
+                </div>
 
                 <fieldset className="rsvp-fieldset">
                   <legend>
