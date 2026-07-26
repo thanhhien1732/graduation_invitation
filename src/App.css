@@ -58,15 +58,18 @@
 }
 
 .graduate-photo {
+  --graduate-offset-x: 0px;
   position: absolute;
   bottom: -2.5%;
-  left: 50%;
+  left: calc(50% + var(--graduate-offset-x));
   width: auto;
   max-width: none;
   height: 89%;
   transform: translateX(-50%);
   transform-origin: center bottom;
   filter: drop-shadow(0 22px 30px rgb(45 0 0 / 30%));
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 93%, transparent 100%);
   animation: person-float 2s ease-in-out 1s infinite alternate;
 }
 
@@ -363,6 +366,131 @@
   box-shadow:
     inset 0 0 0 3px rgb(255 255 255 / 12%),
     0 3px 8px rgb(91 0 0 / 28%);
+}
+
+.is-guide-highlighted {
+  border-radius: 8px;
+  outline: 3px solid #fff4d6;
+  outline-offset: 7px;
+  box-shadow: 0 0 28px rgb(255 244 214 / 88%);
+}
+
+.invitation-stage.is-guide-active .background-layer,
+.invitation-stage.is-guide-active .graduate-reveal,
+.invitation-stage.is-guide-active .foreground-layer,
+.invitation-stage.is-guide-active .graduation-heading,
+.invitation-stage.is-guide-active .graduate-name {
+  filter: brightness(0.48);
+  transition: filter 220ms ease;
+}
+
+.invitation-stage.is-guide-active .event-time,
+.invitation-stage.is-guide-active .event-divider,
+.invitation-stage.is-guide-active .university,
+.invitation-stage.is-guide-active .event-address,
+.invitation-stage.is-guide-active .contact-row {
+  opacity: 0.38;
+  transition:
+    opacity 220ms ease,
+    filter 220ms ease;
+}
+
+.invitation-stage.is-guide-active .event-details .is-guide-highlighted {
+  opacity: 1;
+  filter: brightness(1.2);
+}
+
+.invitation-stage.is-guide-active .rsvp-trigger {
+  opacity: 0.5;
+  filter: brightness(0.58);
+  transition:
+    opacity 220ms ease,
+    filter 220ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.invitation-stage.is-guide-active .rsvp-trigger.is-guide-highlighted {
+  opacity: 1;
+  filter: none;
+}
+
+.event-time.is-guide-highlighted,
+.event-address.is-guide-highlighted,
+.contact-row.is-guide-highlighted {
+  position: relative;
+  z-index: 20;
+  animation: guide-highlight-pulse 1.2s ease-in-out infinite alternate;
+}
+
+.rsvp-trigger.is-guide-highlighted {
+  z-index: 20;
+}
+
+.invitation-guide {
+  position: fixed;
+  z-index: 30;
+  top: 104px;
+  left: 28px;
+  width: min(340px, calc(100vw - 56px));
+  padding: 18px 19px 16px;
+  color: #4b1717;
+  font-family: 'Darker Grotesque', Arial, sans-serif;
+  background: rgb(255 250 242 / 96%);
+  border: 1px solid rgb(255 255 255 / 88%);
+  border-radius: 16px;
+  box-shadow: 0 18px 46px rgb(31 0 0 / 38%);
+}
+
+.invitation-guide-count {
+  margin: 0 0 2px;
+  color: #9b1717;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.invitation-guide h2 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.05;
+}
+
+.invitation-guide>p:not(.invitation-guide-count) {
+  margin: 7px 0 14px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.invitation-guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.invitation-guide-actions button {
+  min-height: 34px;
+  padding: 5px 11px;
+  color: #7a1414;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 750;
+  background: transparent;
+  border: 1px solid rgb(122 20 20 / 32%);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.invitation-guide-actions button:last-child {
+  color: #fff9f3;
+  background: #951717;
+  border-color: #951717;
+}
+
+.invitation-guide-actions button:focus-visible {
+  outline: 3px solid #4b1717;
+  outline-offset: 2px;
 }
 
 .rsvp-backdrop {
@@ -849,11 +977,11 @@
 
 @keyframes person-float {
   from {
-    transform: translateX(-50%) translateY(0);
+    translate: 0 0;
   }
 
   to {
-    transform: translateX(-50%) translateY(-2%);
+    translate: 0 -2%;
   }
 }
 
@@ -926,6 +1054,18 @@
   }
 }
 
+@keyframes guide-highlight-pulse {
+  from {
+    outline-color: #fff4d6;
+    box-shadow: 0 0 18px rgb(255 244 214 / 64%);
+  }
+
+  to {
+    outline-color: #fff;
+    box-shadow: 0 0 32px rgb(255 244 214 / 96%);
+  }
+}
+
 @keyframes backdrop-enter {
   from {
     opacity: 0;
@@ -979,6 +1119,7 @@
   .graduate-photo {
     bottom: 5%;
     height: 82%;
+    --graduate-offset-x: 17px;
   }
 
   .graduate-name {
@@ -998,6 +1139,12 @@
   .event-details {
     bottom: 5%;
     width: min(620px, 80vw);
+  }
+
+  .invitation-guide {
+    top: 88px;
+    left: 24px;
+    width: min(340px, 46vw);
   }
 }
 
@@ -1035,7 +1182,7 @@
   .graduate-photo {
     bottom: 9%;
     height: 73%;
-    left: 55%;
+    --graduate-offset-x: 23px;
   }
 
   .foreground-layer {
@@ -1126,6 +1273,22 @@
     height: 32px;
   }
 
+  .invitation-guide {
+    top: 64px;
+    left: 12px;
+    width: calc(100vw - 24px);
+    padding: 14px 15px 13px;
+  }
+
+  .invitation-guide h2 {
+    font-size: 22px;
+  }
+
+  .invitation-guide>p:not(.invitation-guide-count) {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
   .rsvp-backdrop {
     padding: 0;
     place-items: end center;
@@ -1178,6 +1341,7 @@
   .event-details,
   .rsvp-trigger,
   .rsvp-trigger::after,
+  .is-guide-highlighted,
   .rsvp-success button,
   .rsvp-backdrop,
   .rsvp-dialog,

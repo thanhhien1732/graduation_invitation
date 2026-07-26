@@ -20,6 +20,34 @@ const initialForm = {
 
 const isGmailAddress = (email) => /^[A-Z0-9._%+-]+@gmail\.com$/i.test(email)
 
+const invitationGuideSteps = [
+  {
+    target: 'date',
+    title: 'Ngày diễn ra lễ',
+    description: 'Lễ tốt nghiệp diễn ra vào Thứ năm 06/08.',
+  },
+  {
+    target: 'time',
+    title: 'Giờ bắt đầu',
+    description: 'Buổi lễ bắt đầu vào lúc 10H30.',
+  },
+  {
+    target: 'address',
+    title: 'Địa điểm',
+    description: 'Nhấn vào địa chỉ để mở chỉ đường trên Google Maps.',
+  },
+  {
+    target: 'phone',
+    title: 'Số điện thoại',
+    description: 'Nhấn vào một trong hai số để gọi nhanh.',
+  },
+  {
+    target: 'confirm',
+    title: 'Xác nhận tham dự',
+    description: 'Nhấn nút này để mở biểu mẫu xác nhận của bạn.',
+  },
+]
+
 const getSuccessMessage = ({ ceremony, party }) => {
   const isAttendingParty = party.length > 0 && !party.includes('Không')
 
@@ -43,7 +71,9 @@ function App() {
   const [formData, setFormData] = useState(initialForm)
   const [submitState, setSubmitState] = useState('idle')
   const [submitMessage, setSubmitMessage] = useState('')
+  const [guideStep, setGuideStep] = useState(null)
   const triggerRef = useRef(null)
+  const guideTargetRefs = useRef({})
 
   useEffect(() => {
     if (!isRsvpOpen) return undefined
@@ -65,6 +95,16 @@ function App() {
       document.removeEventListener('keydown', closeOnEscape)
     }
   }, [isRsvpOpen])
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const tourTimer = window.setTimeout(
+      () => setGuideStep(0),
+      prefersReducedMotion ? 0 : 3700,
+    )
+
+    return () => window.clearTimeout(tourTimer)
+  }, [])
 
   const openRsvp = () => {
     setSubmitState('idle')
@@ -198,10 +238,16 @@ function App() {
   }
 
   const isAttendingCeremony = formData.ceremony === 'Có'
+  const activeGuideTarget =
+    guideStep === null ? null : invitationGuideSteps[guideStep].target
+  const activeGuide = guideStep === null ? null : invitationGuideSteps[guideStep]
 
   return (
     <main className="invitation-page">
-      <section className="invitation-stage" aria-labelledby="invitation-title">
+      <section
+        className={`invitation-stage${activeGuide ? ' is-guide-active' : ''}`}
+        aria-labelledby="invitation-title"
+      >
         <div
           className="background-layer"
           style={{ backgroundImage: `url("${backgroundImage}")` }}
@@ -241,11 +287,21 @@ function App() {
 
         <div className="event-details">
           <div className="event-time-row">
-            <div className="event-time">
+            <div
+              ref={(element) => {
+                guideTargetRefs.current.date = element
+              }}
+              className={`event-time${activeGuideTarget === 'date' ? ' is-guide-highlighted' : ''}`}
+            >
               <span>Thứ năm</span>
               <strong>06/08</strong>
             </div>
-            <div className="event-time">
+            <div
+              ref={(element) => {
+                guideTargetRefs.current.time = element
+              }}
+              className={`event-time${activeGuideTarget === 'time' ? ' is-guide-highlighted' : ''}`}
+            >
               <span>Vào lúc</span>
               <strong>10H30</strong>
             </div>
@@ -263,7 +319,10 @@ function App() {
           </div>
 
           <a
-            className="event-address"
+            ref={(element) => {
+              guideTargetRefs.current.address = element
+            }}
+            className={`event-address${activeGuideTarget === 'address' ? ' is-guide-highlighted' : ''}`}
             href="https://www.google.com/maps/search/?api=1&query=69%2F68%20%C4%90%E1%BA%B7ng%20Th%C3%B9y%20Tr%C3%A2m%2C%20ph%C6%B0%E1%BB%9Dng%20B%C3%ACnh%20L%E1%BB%A3i%20Trung%2C%20TP.%20HCM"
             target="_blank"
             rel="noreferrer"
@@ -271,7 +330,12 @@ function App() {
             69/68 Đặng Thùy Trâm, phường Bình Lợi Trung, TP. HCM
           </a>
 
-          <div className="contact-row">
+          <div
+            ref={(element) => {
+              guideTargetRefs.current.phone = element
+            }}
+            className={`contact-row${activeGuideTarget === 'phone' ? ' is-guide-highlighted' : ''}`}
+          >
             <a href="tel:+84335434504">
               <span className="phone-icon" aria-hidden="true">
                 <i className="fa-solid fa-phone" />
@@ -289,7 +353,7 @@ function App() {
 
         <button
           ref={triggerRef}
-          className="rsvp-trigger"
+          className={`rsvp-trigger${activeGuideTarget === 'confirm' ? ' is-guide-highlighted' : ''}`}
           type="button"
           onClick={openRsvp}
           aria-haspopup="dialog"
@@ -299,6 +363,35 @@ function App() {
           </span>
           Xác nhận tham dự
         </button>
+
+        {activeGuide && (
+          <>
+            <aside className="invitation-guide" aria-live="polite">
+              <p className="invitation-guide-count">
+                {guideStep + 1} / {invitationGuideSteps.length}
+              </p>
+              <h2>{activeGuide.title}</h2>
+              <p>{activeGuide.description}</p>
+              <div className="invitation-guide-actions">
+                {guideStep > 0 && (
+                  <button type="button" onClick={() => setGuideStep(guideStep - 1)}>
+                    Quay lại
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setGuideStep(
+                      guideStep === invitationGuideSteps.length - 1 ? null : guideStep + 1,
+                    )
+                  }
+                >
+                  {guideStep === invitationGuideSteps.length - 1 ? 'Hoàn tất' : 'Tiếp theo'}
+                </button>
+              </div>
+            </aside>
+          </>
+        )}
       </section>
 
       {isRsvpOpen && (
