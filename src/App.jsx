@@ -13,12 +13,15 @@ const initialForm = {
   ceremony: '',
   vluAffiliation: '',
   birthYear: '',
+  phone: '',
   email: '',
   party: [],
   note: '',
 }
 
 const isGmailAddress = (email) => /^[A-Z0-9._%+-]+@gmail\.com$/i.test(email)
+const isVietnamesePhoneNumber = (phone) =>
+  /^(?:0|\+84)(?:3|5|7|8|9)\d{8}$/.test(phone.replace(/[.\s()-]/g, ''))
 
 const invitationGuideSteps = [
   {
@@ -128,6 +131,14 @@ function App() {
       )
     }
 
+    if (name === 'phone') {
+      event.target.setCustomValidity(
+        value && !isVietnamesePhoneNumber(value)
+          ? 'Vui lòng nhập số điện thoại Việt Nam hợp lệ (ví dụ: 0901234567).'
+          : '',
+      )
+    }
+
     setFormData((current) => ({ ...current, [name]: value }))
   }
 
@@ -137,7 +148,7 @@ function App() {
     setFormData((current) => ({
       ...current,
       ceremony: value,
-      ...(value === 'Có' ? {} : { vluAffiliation: '', birthYear: '', email: '' }),
+      ...(value === 'Có' ? {} : { vluAffiliation: '', birthYear: '', phone: '', email: '' }),
     }))
   }
 
@@ -147,7 +158,7 @@ function App() {
     setFormData((current) => ({
       ...current,
       vluAffiliation: value,
-      ...(value === 'Không phải' ? {} : { birthYear: '', email: '' }),
+      ...(value === 'Không phải' ? {} : { birthYear: '', phone: '', email: '' }),
     }))
   }
 
@@ -176,6 +187,21 @@ function App() {
     if (formData.vluAffiliation === 'Không phải' && !formData.birthYear) {
       setSubmitState('error')
       setSubmitMessage('Vui lòng chọn năm sinh của bạn.')
+      return
+    }
+
+    if (formData.vluAffiliation === 'Không phải' && !formData.phone.trim()) {
+      setSubmitState('error')
+      setSubmitMessage('Vui lòng nhập số điện thoại để mình liên hệ khi cần.')
+      return
+    }
+
+    if (
+      formData.vluAffiliation === 'Không phải' &&
+      !isVietnamesePhoneNumber(formData.phone)
+    ) {
+      setSubmitState('error')
+      setSubmitMessage('Vui lòng nhập số điện thoại Việt Nam hợp lệ (ví dụ: 0901234567).')
       return
     }
 
@@ -220,6 +246,7 @@ function App() {
         },
         body: JSON.stringify({
           ...formData,
+          phone: formData.phone.trim(),
           email: formData.email.trim(),
           party: formData.party.join(', '),
           submittedAt: new Date().toISOString(),
@@ -550,6 +577,28 @@ function App() {
                           min="1900"
                           max={new Date().getFullYear()}
                           placeholder="Nhập năm sinh của bạn"
+                          required={
+                            isAttendingCeremony && formData.vluAffiliation === 'Không phải'
+                          }
+                          disabled={
+                            !isAttendingCeremony || formData.vluAffiliation !== 'Không phải'
+                          }
+                        />
+                      </label>
+                      <label className="rsvp-field">
+                        <span>
+                          Số điện thoại <strong aria-hidden="true">*</strong>
+                        </span>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={updateField}
+                          autoComplete="tel"
+                          inputMode="tel"
+                          pattern="(?:0|[+]84)[ .()-]*(?:3|5|7|8|9)(?:[ .()-]*[0-9]){8}"
+                          title="Vui lòng nhập số điện thoại Việt Nam hợp lệ, ví dụ: 0901234567"
+                          placeholder="Nhập số điện thoại của bạn"
                           required={
                             isAttendingCeremony && formData.vluAffiliation === 'Không phải'
                           }

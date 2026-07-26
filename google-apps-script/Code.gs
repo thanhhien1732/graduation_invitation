@@ -1,11 +1,13 @@
 const SHEET_NAME = 'RSVP';
 const GMAIL_PATTERN = /^[A-Z0-9._%+-]+@gmail\.com$/i;
+const VIETNAMESE_PHONE_PATTERN = /^(?:0|\+84)(?:3|5|7|8|9)\d{8}$/;
 const SHEET_HEADERS = [
   'STT',
   'Họ và tên',
   'Tham dự lễ tốt nghiệp',
   'Tham dự tiệc ăn mừng',
   'Năm sinh',
+  'Số điện thoại',
   'Email',
   'Nhắn nhủ',
   'Thời gian gửi',
@@ -28,6 +30,8 @@ function doPost(event) {
       (data.ceremony === 'Có' &&
         data.vluAffiliation === 'Không phải' &&
         (!data.birthYear ||
+          !data.phone ||
+          !VIETNAMESE_PHONE_PATTERN.test(normalizePhone(data.phone)) ||
           !data.email ||
           !GMAIL_PATTERN.test(String(data.email).trim())))
     ) {
@@ -55,6 +59,7 @@ function doPost(event) {
       sanitizeCell(data.ceremony),
       sanitizeCell(data.party),
       sanitizeCell(data.birthYear || ''),
+      sanitizeCell(normalizePhone(data.phone || '')),
       sanitizeCell(data.email || ''),
       sanitizeCell(data.note || ''),
       new Date(),
@@ -120,6 +125,7 @@ function ensureSheetLayout(sheet) {
     valueFrom(row, 'Tham dự lễ tốt nghiệp'),
     valueFrom(row, 'Tham dự tiệc ăn mừng'),
     valueFrom(row, 'Năm sinh'),
+    valueFrom(row, 'Số điện thoại'),
     valueFrom(row, 'Email'),
     valueFrom(row, 'Nhắn nhủ') || valueFrom(row, 'Ghi chú'),
     valueFrom(row, 'Thời gian gửi'),
@@ -143,6 +149,10 @@ function ensureSheetLayout(sheet) {
 function sanitizeCell(value) {
   const text = String(value).trim();
   return /^[=+\-@]/.test(text) ? `'${text}` : text;
+}
+
+function normalizePhone(value) {
+  return String(value).trim().replace(/[.\s()-]/g, '');
 }
 
 function jsonResponse(payload) {
