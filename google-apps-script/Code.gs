@@ -59,7 +59,7 @@ function doPost(event) {
       sanitizeCell(data.ceremony),
       sanitizeCell(data.party),
       sanitizeCell(data.birthYear || ''),
-      sanitizeCell(normalizePhone(data.phone || '')),
+      formatPhoneForSheet(data.phone || ''),
       sanitizeCell(data.email || ''),
       sanitizeCell(data.note || ''),
       new Date(),
@@ -153,6 +153,11 @@ function sanitizeCell(value) {
 
 function normalizePhone(value) {
   return String(value).trim().replace(/[.\s()-]/g, '');
+}
+
+function formatPhoneForSheet(value) {
+  const phone = normalizePhone(value);
+  return phone ? `'${phone}` : '';
 }
 
 function jsonResponse(payload) {
