@@ -12,6 +12,7 @@ const initialForm = {
   fullName: '',
   ceremony: '',
   vluAffiliation: '',
+  birthYear: '',
   email: '',
   party: [],
   note: '',
@@ -96,7 +97,7 @@ function App() {
     setFormData((current) => ({
       ...current,
       ceremony: value,
-      ...(value === 'Có' ? {} : { vluAffiliation: '', email: '' }),
+      ...(value === 'Có' ? {} : { vluAffiliation: '', birthYear: '', email: '' }),
     }))
   }
 
@@ -106,7 +107,7 @@ function App() {
     setFormData((current) => ({
       ...current,
       vluAffiliation: value,
-      email: value === 'Không phải' ? current.email : '',
+      ...(value === 'Không phải' ? {} : { birthYear: '', email: '' }),
     }))
   }
 
@@ -131,6 +132,12 @@ function App() {
 
   const submitRsvp = async (event) => {
     event.preventDefault()
+
+    if (formData.vluAffiliation === 'Không phải' && !formData.birthYear) {
+      setSubmitState('error')
+      setSubmitMessage('Vui lòng chọn năm sinh của bạn.')
+      return
+    }
 
     if (formData.vluAffiliation === 'Không phải' && !formData.email.trim()) {
       setSubmitState('error')
@@ -434,8 +441,30 @@ function App() {
                     aria-hidden={
                       !isAttendingCeremony || formData.vluAffiliation !== 'Không phải'
                     }
-                  >
+                    >
                     <div className="rsvp-email-reveal-inner">
+                      <label className="rsvp-field">
+                        <span>
+                          Năm sinh <strong aria-hidden="true">*</strong>
+                        </span>
+                        <input
+                          type="number"
+                          name="birthYear"
+                          value={formData.birthYear}
+                          onChange={updateField}
+                          autoComplete="bday-year"
+                          inputMode="numeric"
+                          min="1900"
+                          max={new Date().getFullYear()}
+                          placeholder="Nhập năm sinh của bạn"
+                          required={
+                            isAttendingCeremony && formData.vluAffiliation === 'Không phải'
+                          }
+                          disabled={
+                            !isAttendingCeremony || formData.vluAffiliation !== 'Không phải'
+                          }
+                        />
+                      </label>
                       <label className="rsvp-field">
                         <span>
                           Email <strong aria-hidden="true">*</strong>

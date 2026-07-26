@@ -5,6 +5,7 @@ const SHEET_HEADERS = [
   'Họ và tên',
   'Tham dự lễ tốt nghiệp',
   'Tham dự tiệc ăn mừng',
+  'Năm sinh',
   'Email',
   'Nhắn nhủ',
   'Thời gian gửi',
@@ -26,7 +27,9 @@ function doPost(event) {
       !data.party ||
       (data.ceremony === 'Có' &&
         data.vluAffiliation === 'Không phải' &&
-        (!data.email || !GMAIL_PATTERN.test(String(data.email).trim())))
+        (!data.birthYear ||
+          !data.email ||
+          !GMAIL_PATTERN.test(String(data.email).trim())))
     ) {
       return jsonResponse({
         ok: false,
@@ -51,6 +54,7 @@ function doPost(event) {
       sanitizeCell(data.fullName),
       sanitizeCell(data.ceremony),
       sanitizeCell(data.party),
+      sanitizeCell(data.birthYear || ''),
       sanitizeCell(data.email || ''),
       sanitizeCell(data.note || ''),
       new Date(),
@@ -115,6 +119,7 @@ function ensureSheetLayout(sheet) {
     valueFrom(row, 'Họ và tên'),
     valueFrom(row, 'Tham dự lễ tốt nghiệp'),
     valueFrom(row, 'Tham dự tiệc ăn mừng'),
+    valueFrom(row, 'Năm sinh'),
     valueFrom(row, 'Email'),
     valueFrom(row, 'Nhắn nhủ') || valueFrom(row, 'Ghi chú'),
     valueFrom(row, 'Thời gian gửi'),
