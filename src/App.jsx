@@ -103,7 +103,7 @@ function App() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const tourTimer = window.setTimeout(
       () => setGuideStep(0),
-      prefersReducedMotion ? 0 : 3700,
+      prefersReducedMotion ? 0 : 3500,
     )
 
     return () => window.clearTimeout(tourTimer)
